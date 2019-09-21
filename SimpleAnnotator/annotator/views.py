@@ -70,7 +70,7 @@ def annotate(request, from_save=False):
 
     text = context['active_doc'].text
 
-    start = text.index(context['active_doc'].string_orig)
+    start = text.lower().index(context['active_doc'].string_orig.lower())
     end = start + len(context['active_doc'].string_orig)
 
     s_start = max(0, start-200)
