@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block style %} 
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/annotations.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style='margin-top: 30px'>
+    <div class="row">      
+        <div class="col-3">
+            <table class="table table-hover sets">
+                <thead>
+                    <tr>
+                        <th style='border-top: 0px'> ICD-10 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for st in document_sets %}
+                    <tr> 
+                        {% if st.done %}
+                            {% ifequal st.id active_doc.document_set.id %}
+                                <td style='background-color: beige; color: green'>
+                                    <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
+                                </td>
+                            {% else %}
+                                <td style='color: green'>
+                                    <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
+                                </td>
+                            {% endifequal %}
+                        {% else %}
+                            {% ifequal st.id active_doc.document_set.id %}
+                                <td style='background-color: beige; color: red'>
+                                    <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
+                                </td>
+                            {% else %}
+                                <td style='color: red'>
+                                    <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
+                                </td>
+                            {% endifequal %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <table class="table table-hover docs">
+                <thead>
+                    <tr>
+                        <th style='border-top: 0px'> Documents </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        {% if doc.done %}
+                            {% ifequal doc.id active_doc.id %}
+                                <td style='background-color: beige; color: green'> 
+                                    <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
+                                </td>
+                            {% else %}
+                                <td style='color: green'> 
+                                    <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
+                                </td>
+                            {% endifequal %}
+                        {% else %}
+                            {% ifequal doc.id active_doc.id %}
+                                <td style='background-color: beige; color: red'> 
+                                    <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
+                                </td>
+                            {% else %}
+                                <td style='color: red'> 
+                                    <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
+                                </td>
+                            {% endifequal %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-5">
+            {{text|safe}}
+        </div>
+
+        <div class="col-4">
+            <table class="table info">
+                <thead>
+                    <tr>
+                        <th style='border-top: 0px'> <h4>{{pretty_name}}<h4> </th>
+                    </tr>
+                    <tr>
+                        <th style='border-top: 0px; color: red'> ICD-10: {{icd}} </th>
+                    </tr>
+                    <tr>
+                        <th style='border-top: 0px'> {{active_doc.cui}} </th>
+                    </tr>
+                    <tr>
+                        <th style='border-top: 0px'> {{type}} </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <form method='POST' class='textbox' action='save?pid={{pid}}&sid={{active_doc.document_set.id}}'>
+                    <input type='hidden' name='did' value={{active_doc.id}}>
+                    {% csrf_token %}
+                        {% for task in tasks %}
+                        <tr style='background-color: beige'>
+                            <td style='text-align: center; font-size: 16px'>{{ task.name }}</td>
+                        </tr>
+                        <tr> 
+                            <td>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons" style='width: 100%; margin-bottom: 30px'>
+                                    {% for value in task.values.all %}
+                                    {% if active_doc.done %}
+                                        {% ifequal task.cid value.id %}
+                                            <label class="btn btn-outline-success active">
+                                                <input type="radio" name="{{task.id}}" id="option1" autocomplete="off" checked value='{{value.id}}'> {{ value.name }}
+                                            </label>
+                                        {% else %}
+                                            <label class="btn btn-outline-success">
+                                                <input type="radio" name="{{task.id}}" id="option1" autocomplete="off" value='{{value.id}}'> {{ value.name }}
+                                            </label> 
+                                        {% endifequal %}
+                                    {% else %}
+                                        <label class="btn btn-outline-success">
+                                            <input type="radio" name="{{task.id}}" id="option1" autocomplete="off" value='{{value.id}}'> {{ value.name }}
+                                        </label>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <button type="submit" class="btn btn-primary">Save and Next document</button>
+                            </td>
+                        </tr>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
