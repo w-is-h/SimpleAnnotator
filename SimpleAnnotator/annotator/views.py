@@ -2,6 +2,9 @@ from django.shortcuts import render
 from .models import *
 from .utils import get_doc
 import icd10
+from medcat.cdb import CDB
+cdb = CDB()
+#cdb.load_dict("/home/ubuntu/data/umls/models/trained/cdb-umls-lr-1-cs-9-np-0.5-2m-n.dat")
 
 
 def index(requet):
@@ -27,6 +30,13 @@ def annotate(request, from_save=False):
 
     if 'pid' in data:
         pid = data['pid']
+        project = Project.objects.get(id=pid)
+        document = None
+        context['document_sets'] = DocumentSet.objects.filter(project=project).order_by('name')
+        context['pid'] = pid
+    else:
+        # Get first project for this user
+        pid = Project.objects.filter(members=request.user)[0].id
         project = Project.objects.get(id=pid)
         document = None
         context['document_sets'] = DocumentSet.objects.filter(project=project).order_by('name')
@@ -83,7 +93,10 @@ def annotate(request, from_save=False):
     context['text'] = text
 
     # Info from MedCAT and some dict
-    context['pretty_name'] = "Kidney Failure"
+    context['pretty_name'] = None
+    if context['active_doc'].cui.upper() in cdb.cui2pretty_name:
+        context['pretty_name'] = cdb.cui2pretty_name[context['active_doc'].cui.upper()]
+
     try:
         context['icd'] = icd10.find(context['active_doc'].document_set.name.upper()).description
     except:
