@@ -69,11 +69,12 @@ def annotate(request, from_save=False):
             context['active_doc'] = document
 
     text = context['active_doc'].text
-    start = context['active_doc'].start_ind
-    end = context['active_doc'].end_ind
 
-    s_start = max(0, start-1000)
-    s_end = min(len(text), end + 1000)
+    start = text.index(context['active_doc'].string_orig)
+    end = start + len(context['active_doc'].string_orig)
+
+    s_start = max(0, start-200)
+    s_end = min(len(text), end + 200)
     print(s_start)
 
     text = text[s_start:start] + "<span class='ann'>" + text[start:end] + "</span>" + text[end:s_end]
