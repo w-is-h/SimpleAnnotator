@@ -28,7 +28,7 @@ def annotate(request, from_save=False):
         pid = data['pid']
         project = Project.objects.get(id=pid)
         document = None
-        context['document_sets'] = DocumentSet.objects.filter(project=project)
+        context['document_sets'] = DocumentSet.objects.filter(project=project).order_by('name')
         context['pid'] = pid
 
 

@@ -8,7 +8,7 @@ table.sets{
 
 div.sets{
   max-height: 40vh;
-  overflow: scroll;
+  overflow-y: scroll;
   width: 100%;
 }
 
@@ -19,7 +19,7 @@ table.docs{
 div.docs{
   max-height: 40vh;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 a {
@@ -69,10 +69,6 @@ div.icons{
   font-size: 30px;
   position: relative;
   float: right;
-}
-
-table.info{
-  margin-top: 10%;
 }
 
 .concept-info{
