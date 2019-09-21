@@ -39,7 +39,7 @@ class Document(models.Model):
     end_ind = models.IntegerField()
     string_orig = models.TextField(default="", blank=True)
     cui = models.CharField(max_length=100)
-    done = models.BooleanField(default=False, choices=BOOL_CHOICES)
+    done = models.BooleanField(default=False)
     document_id = models.CharField(max_length=1000)
     document_set = models.ForeignKey('DocumentSet', on_delete=models.SET_NULL, blank=True, null=True,
                                      related_name='doc2set')
@@ -53,7 +53,7 @@ class DocumentSet(models.Model):
     name = models.CharField(max_length=50)
     project = models.ForeignKey('Project', on_delete=models.SET_NULL, blank=True, null=True,
                                 related_name='project_doc_set')
-    done = models.BooleanField(default=False, choices=BOOL_CHOICES)
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.name)

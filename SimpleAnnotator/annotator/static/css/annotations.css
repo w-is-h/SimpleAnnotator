@@ -4,15 +4,19 @@ span.ann{
   border-radius: 11px;
 }
 table.sets{
-  display: block;
+}
+
+div.sets{
   max-height: 40vh;
   overflow: scroll;
   width: 100%;
-
 }
 
+
 table.docs{
-  display: block;
+}
+
+div.docs{
   max-height: 40vh;
   width: 100%;
   overflow: scroll;

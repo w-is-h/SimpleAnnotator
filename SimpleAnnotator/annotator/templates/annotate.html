@@ -12,6 +12,7 @@
 <div class="container-fluid" style='margin-top: 30px'>
     <div class="row">      
         <div class="col-3">
+            <div class='sets'>
             <table class="table table-hover sets">
                 <thead>
                     <tr>
@@ -27,7 +28,7 @@
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% else %}
-                                <td style='color: green'>
+                                <td style='background-color: green'>
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% endifequal %}
@@ -37,7 +38,7 @@
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% else %}
-                                <td style='color: red'>
+                                <td style='background-color: red'>
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% endifequal %}
@@ -46,7 +47,9 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
 
+            <div class='docs'>
             <table class="table table-hover docs">
                 <thead>
                     <tr>
@@ -62,7 +65,7 @@
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% else %}
-                                <td style='color: green'> 
+                                <td style='background-color: green'> 
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% endifequal %}
@@ -72,7 +75,7 @@
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% else %}
-                                <td style='color: red'> 
+                                <td style='background-color: red'> 
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% endifequal %}
@@ -81,6 +84,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
         </div>
 
         <div class="col-5">
