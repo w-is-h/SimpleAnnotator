@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .utils import get_doc
+import icd10
 
 
 def index(requet):
@@ -73,8 +74,8 @@ def annotate(request, from_save=False):
     start = text.lower().index(context['active_doc'].string_orig.lower())
     end = start + len(context['active_doc'].string_orig)
 
-    s_start = max(0, start-300)
-    s_end = min(len(text), end + 300)
+    s_start = max(0, start-500)
+    s_end = min(len(text), end + 500)
     print(s_start)
 
     text = text[s_start:start] + "<span class='ann'>" + text[start:end] + "</span>" + text[end:s_end]
@@ -83,8 +84,10 @@ def annotate(request, from_save=False):
 
     # Info from MedCAT and some dict
     context['pretty_name'] = "Kidney Failure"
-    context['type'] = "Disease"
-    context['icd'] = "C32 - Kidney"
+    try:
+        context['icd'] = icd10.find(context['active_doc'].document_set.name.upper()).description
+    except:
+        context['icd'] = "None"
 
     return render(request, 'annotate.html', context)
 
