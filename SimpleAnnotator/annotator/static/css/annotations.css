@@ -32,6 +32,14 @@ div.docs{
   overflow-y: scroll;
 }
 
+h3 {
+  color: blue;
+}
+
+h3:hover{
+  text-decoration: underline;
+}
+
 a {
   display:block;
   width:100%;

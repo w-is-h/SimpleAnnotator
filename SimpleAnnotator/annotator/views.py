@@ -10,8 +10,11 @@ chapter2name = {}
 for row in icd10.chapters:
     chapter2name[row[0]] = row[2]
 
-def index(requet):
-    return redirect("/annotate")
+def index(request):
+    user = request.user
+    context = {}
+    context['projs'] = Project.objects.filter(members=user)
+    return render(request, 'index.html', context)
 
 # Create your views here.
 def annotate(request, from_save=False):
