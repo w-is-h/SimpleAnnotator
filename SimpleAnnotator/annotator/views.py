@@ -6,6 +6,9 @@ from medcat.cdb import CDB
 cdb = CDB()
 #cdb.load_dict("/home/ubuntu/data/umls/models/trained/cdb-umls-lr-1-cs-9-np-0.5-2m-n.dat")
 
+chapter2name = {}
+for row in icd10.chapters:
+    chapter2name[row[0]] = row[2]
 
 def index(requet):
     # list projects
@@ -103,8 +106,10 @@ def annotate(request, from_save=False):
 
     try:
         context['icd'] = icd10.find(context['active_doc'].document_set.name.upper()).description
+        context['ch'] = chapter2name[icd10.find(context['active_doc'].document_set.name.upper()).chapter]
     except:
         context['icd'] = "None"
+        context['ch'] = "None"
 
     return render(request, 'annotate.html', context)
 
