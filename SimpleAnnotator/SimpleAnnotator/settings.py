@@ -100,6 +100,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS=100000
+DATA_UPLOAD_MAX_MEMORY_SIZE=26214400
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

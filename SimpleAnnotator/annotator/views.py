@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .utils import get_doc
 import icd10
@@ -11,8 +11,7 @@ for row in icd10.chapters:
     chapter2name[row[0]] = row[2]
 
 def index(requet):
-    # list projects
-    pass
+    return redirect("/annotate")
 
 # Create your views here.
 def annotate(request, from_save=False):

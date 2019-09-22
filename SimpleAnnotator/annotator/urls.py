@@ -3,6 +3,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('', index, name='index'),
     path('annotate', annotate, name='annotate'),
     path('save', save, name='save'),
 ]
