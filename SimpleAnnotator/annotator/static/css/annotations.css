@@ -6,6 +6,11 @@ span.ann{
 table.sets{
 }
 
+div.info{
+  max-height: 85vh;
+  overflow-y: scroll;
+}
+
 div.sets{
   max-height: 40vh;
   overflow-y: scroll;
@@ -74,14 +79,6 @@ div.icons{
   font-size: 30px;
   position: relative;
   float: right;
-}
-
-.concept-info{
-  box-shadow: -5px -5px 5px -5px #aaaaaa;
-  padding-top: 1%;
-  overflow: scroll;
-  max-height: 82vh;
-  margin-left: 20px;
 }
 
 .row{
