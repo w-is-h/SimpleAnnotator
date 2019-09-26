@@ -109,11 +109,21 @@ def annotate(request, from_save=False):
     try:
         context['icd'] = icd10.find(context['active_doc'].document_set.name.upper()).description
         context['ch'] = chapter2name[icd10.find(context['active_doc'].document_set.name.upper()).chapter]
+        context['ch'] = icd10.find(context['active_doc'].document_set.name.upper()).chapter + " - " + context['ch']
+
     except:
         context['icd'] = "None"
         context['ch'] = "None"
 
+    doc = context['active_doc']
+    try:
+        context['comment'] = Comment.objects.get(document=doc).text
+    except Exception as e:
+        print(e)
+        pass
+
     return render(request, 'annotate.html', context)
+
 
 def save(request):
     print(request.POST)
@@ -121,6 +131,14 @@ def save(request):
     try:
         did = data['did']
         doc = Document.objects.get(id=did)
+
+        # Remove if comment exists
+        Comment.objects.filter(document=doc).delete()
+        if 'comment' in data:
+            com = Comment()
+            com.text = data['comment']
+            com.document = doc
+            com.save()
 
         # Remove if annotation already exists
         MetaAnnotation.objects.filter(document=doc).delete()

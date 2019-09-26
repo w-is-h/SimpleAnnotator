@@ -11,7 +11,7 @@
 
 <div class="container-fluid" style='margin-top: 30px'>
     <div class="row">      
-        <div class="col-3">
+        <div class="col-3" style='font-weight: 900;'>
             <div class='sets'>
             <table class="table table-hover sets">
                 <thead>
@@ -28,7 +28,7 @@
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% else %}
-                                <td style='background-color: green'>
+                                <td style='color: green'>
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% endifequal %}
@@ -38,7 +38,7 @@
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% else %}
-                                <td style='background-color: red'>
+                                <td style='color: red'>
                                     <a href='/annotate?pid={{pid}}&sid={{st.id}}'>{{st.name}}</a>
                                 </td>
                             {% endifequal %}
@@ -65,7 +65,7 @@
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% else %}
-                                <td style='background-color: green'> 
+                                <td style='color: green'> 
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% endifequal %}
@@ -75,7 +75,7 @@
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% else %}
-                                <td style='background-color: red'> 
+                                <td style='color: red'> 
                                     <a href='/annotate?pid={{pid}}&did={{doc.id}}'>{{doc.document_id}}</a>
                                 </td>
                             {% endifequal %}
@@ -98,13 +98,10 @@
                         <th style='border-top: 0px'> <h4>{{pretty_name}}<h4> </th>
                     </tr>
                     <tr>
-                        <th style='border-top: 0px; color: red'> ICD-10-Chapter: {{ch}} </th>
+                        <th style='border-top: 0px'> ICD-10-Chapter: <span style='color: red'>{{ch}}</span> </th>
                     </tr>
                     <tr>
-                        <th style='border-top: 0px; color: red'> ICD-10: {{icd}} </th>
-                    </tr>
-                    <tr>
-                        <th style='border-top: 0px'> {{active_doc.cui}} </th>
+                        <th style='border-top: 0px;'> ICD-10-Specific: {{icd}} </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -142,6 +139,11 @@
                             </td>
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <td>
+                                <textarea placeholder='Comments' class="form-control" name='comment' id="comment" rows="5">{{comment}}</textarea>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <button type="submit" class="btn btn-primary">Save and Next document</button>

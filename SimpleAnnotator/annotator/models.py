@@ -16,6 +16,11 @@ BOOL_CHOICES = [
         ]
 
 
+class Comment(models.Model):
+    document = models.ForeignKey('Document', on_delete=models.CASCADE, blank=True, null=True)
+    text = models.TextField(default="", blank=True)
+
+
 class Concept(models.Model):
     pretty_name = models.CharField(max_length=300)
     cui = models.CharField(max_length=100, unique=True)

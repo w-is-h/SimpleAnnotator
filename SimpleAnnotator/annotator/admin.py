@@ -3,6 +3,7 @@ from .models import *
 import pandas
 from io import StringIO
 from django.http import HttpResponse, HttpResponseRedirect
+import icd10
 
 # Register your models here.
 admin.site.register(Concept)
@@ -18,7 +19,7 @@ def download(modeladmin, request, queryset):
 
     arr = []
     tasks = MetaTask.objects.all()
-    head = ['doc_id', 'string_orig', 'cui', 'icd10', 'done', 'db_id']
+    head = ['doc_id', 'string_orig', 'cui', 'icd10', 'done', 'db_id', 'icd10-ch', 'comment']
     for task in tasks:
         head.append(task.name)
 
@@ -27,6 +28,10 @@ def download(modeladmin, request, queryset):
     for ds in dss:
         docs = Document.objects.filter(document_set=ds)
         for doc in docs:
+            try:
+                comment = Comment.objects.get(document=doc).text
+            except:
+                comment = ""
             row = [""] * len(head)
             row[0] = doc.document_id
             row[1] = doc.string_orig
@@ -34,6 +39,8 @@ def download(modeladmin, request, queryset):
             row[3] = ds.name
             row[4] = doc.done
             row[5] = doc.id
+            row[6] = icd10.find(ds.name.upper()).chapter
+            row[7] = comment
             anns = MetaAnnotation.objects.filter(document=doc)
             for ann in anns:
                 row[head.index(ann.meta_task.name)] = ann.meta_task_value.name
