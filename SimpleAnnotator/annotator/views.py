@@ -51,14 +51,6 @@ def annotate(request, from_save=False):
     if 'did' in data:
         did = int(data['did'])
         document = Document.objects.get(id=did)
-        if document.done:
-            anns = MetaAnnotation.objects.filter(document=document)
-            context['tasks'][0].real_val = False
-            for task in context['tasks']:
-                ann = MetaAnnotation.objects.filter(document=document, meta_task=task)
-                if ann:
-                    ann = ann[0]
-                    task.cid = ann.meta_task_value.id
     elif project is not None:
         if sid is not None:
             # Get all ds
@@ -121,6 +113,17 @@ def annotate(request, from_save=False):
     except Exception as e:
         print(e)
         pass
+
+    document = doc
+    if document.done:
+        anns = MetaAnnotation.objects.filter(document=document)
+        context['tasks'][0].real_val = False
+        for task in context['tasks']:
+            ann = MetaAnnotation.objects.filter(document=document, meta_task=task)
+            if ann:
+                ann = ann[0]
+                task.cid = ann.meta_task_value.id
+
 
     return render(request, 'annotate.html', context)
 
