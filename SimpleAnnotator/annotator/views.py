@@ -78,7 +78,13 @@ def annotate(request, from_save=False):
 
     text = context['active_doc'].text
 
-    if context['active_doc'].string_orig.lower() in text.lower():
+    _s = context['active_doc'].start_ind
+    if context['active_doc'].string_orig.lower() in text[_s:].lower():
+        print("RIGHT VAL")
+        start = text.lower().index(context['active_doc'].string_orig[_s:].lower()) + _s
+        end = start + len(context['active_doc'].string_orig)
+    elif context['active_doc'].string_orig.lower() in text.lower():
+        print("SECOND")
         start = text.lower().index(context['active_doc'].string_orig.lower())
         end = start + len(context['active_doc'].string_orig)
     else:
