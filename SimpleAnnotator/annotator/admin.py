@@ -7,7 +7,6 @@ import icd10
 
 # Register your models here.
 admin.site.register(Concept)
-admin.site.register(Document)
 admin.site.register(DocumentSet)
 admin.site.register(MetaTaskValue)
 admin.site.register(MetaTask)
@@ -59,3 +58,11 @@ class ProjectAdmin(admin.ModelAdmin):
     model = Project
     actions = [download]
 admin.site.register(Project, ProjectAdmin)
+
+
+def remove_all_documents(modeladmin, request, queryset):
+    Document.objects.all().delete()
+
+class DocumentAdmin(admin.ModelAdmin):
+    model = Document
+    actions = [remove_all_documents]
