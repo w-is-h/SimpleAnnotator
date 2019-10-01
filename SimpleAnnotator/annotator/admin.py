@@ -66,3 +66,5 @@ def remove_all_documents(modeladmin, request, queryset):
 class DocumentAdmin(admin.ModelAdmin):
     model = Document
     actions = [remove_all_documents]
+
+admin.site.register(Document, DocumentAdmin)
