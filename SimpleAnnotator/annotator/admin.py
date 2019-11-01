@@ -18,7 +18,7 @@ def download(modeladmin, request, queryset):
 
     arr = []
     tasks = MetaTask.objects.all()
-    head = ['doc_id', 'string_orig', 'cui', 'icd10', 'done', 'db_id', 'icd10-ch', 'comment']
+    head = ['doc_id', 'string_orig', 'cui', 'icd10', 'done', 'db_id', 'icd10-ch', 'comment', 'start', 'end', '_start', '_end', 'text']
     for task in tasks:
         head.append(task.name)
 
@@ -31,19 +31,41 @@ def download(modeladmin, request, queryset):
                 comment = Comment.objects.get(document=doc).text
             except:
                 comment = ""
-            row = [""] * len(head)
-            row[0] = doc.document_id
-            row[1] = doc.string_orig
-            row[2] = doc.cui
-            row[3] = ds.name
-            row[4] = doc.done
-            row[5] = doc.id
-            row[6] = icd10.find(ds.name.upper()).chapter
-            row[7] = comment
-            anns = MetaAnnotation.objects.filter(document=doc)
-            for ann in anns:
-                row[head.index(ann.meta_task.name)] = ann.meta_task_value.name
-            arr.append(row)
+
+            _start = doc.start_ind
+            _end = doc.end_ind
+
+            text = doc.text.lower()
+            if doc.string_orig.lower() in text[_start:]:
+                start = text[_start:].index(doc.string_orig.lower()) + _start
+                end = start + len(doc.string_orig)
+            elif doc.string_orig.lower() in text:
+                start = text.index(doc.string_orig.lower())
+                end = start + len(doc.string_orig)
+            else:
+                start = -1
+                end = -1
+
+            if start != -1:
+                row = [""] * len(head)
+                row[0] = doc.document_id
+                row[1] = doc.string_orig
+                row[2] = doc.cui
+                row[3] = ds.name
+                row[4] = doc.done
+                row[5] = doc.id
+                row[6] = icd10.find(ds.name.upper()).chapter
+                row[7] = comment
+                row[8] = start
+                row[9] = end
+                row[10] = _start
+                row[11] = _end
+                row[12] = doc.text
+
+                anns = MetaAnnotation.objects.filter(document=doc)
+                for ann in anns:
+                    row[head.index(ann.meta_task.name)] = ann.meta_task_value.name
+                arr.append(row)
 
     sio = StringIO()
     df = pandas.DataFrame(arr[1:], columns=arr[0])
